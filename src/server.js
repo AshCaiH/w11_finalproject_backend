@@ -1,15 +1,21 @@
 require("dotenv").config();
-const express = require("express");
 const cors = require("cors");
+const express = require("express");
+const User = require("./users/model");
 
 const port = process.env.PORT || 5001;
 
 const app = express();
-
 app.use(cors());
+
 app.use(express.json());
 
+const SyncTables = () => {
+  User.sync();
+};
+
 app.listen(port, () => {
+  SyncTables();
   console.log(`Server is listening on port ${port}`);
 });
 
