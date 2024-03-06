@@ -1,8 +1,8 @@
 const { Router } = require("express");
-const { weatherQuery } = require("./functions");
+const { weatherResponse, requestLocation, requestWeather } = require("./functions");
 
 const commonRouter = Router();
 
-commonRouter.post("/getweather",  weatherQuery);
+commonRouter.post("/getweather", requestLocation, requestWeather, weatherResponse);
 
 module.exports = commonRouter;
