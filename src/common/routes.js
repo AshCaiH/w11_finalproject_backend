@@ -3,6 +3,6 @@ const { weatherQuery } = require("./functions");
 
 const commonRouter = Router();
 
-commonRouter.get("/getweather",  weatherQuery);
+commonRouter.post("/getweather",  weatherQuery);
 
 module.exports = commonRouter;
