@@ -23,7 +23,6 @@ userRouter.post("/users/logIn", comparePass, logIn);
 
 // Auth check
 userRouter.get("/users/authCheck", tokenCheck, logIn);
-
 // Update user
 // In body specify what You want to update
 // Ex Body for update username {username: <new username>} and  path: /users/update/username
@@ -31,7 +30,6 @@ userRouter.get("/users/authCheck", tokenCheck, logIn);
 // Ex Body for update password {password: <new password>} and  path: /users/update/password
 
 userRouter.put("/users/update/:choice", tokenCheck, updateUser);
-
 // Delete User
 // No body
 userRouter.delete("/users/delUser", tokenCheck, delUser);

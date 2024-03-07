@@ -102,7 +102,7 @@ const updateUser = async (req, res) => {
         }
       );
     } else {
-      throw new Error("Check body");
+      throw new Error("Check body or request path");
     }
     const updatedUser = await User.findOne({
       where: { id: req.authCheck.id },
