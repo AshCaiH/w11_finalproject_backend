@@ -1,4 +1,5 @@
 const User = require("./model");
+const jwt = require("jsonwebtoken");
 
 // SignUp
 const signUp = async (req, res) => {
@@ -27,8 +28,26 @@ const getUsers = async (req, res) => {
 
 const logIn = async (req, res) => {
   try {
-    console.log(req.user);
-    res.status(201).json({ message: "Successfull logIn", user: req.user });
+    if (req.authCheck) {
+      const user = {
+        id: req.authCheck.id,
+        username: req.authCheck.username,
+      };
+      res
+        .status(201)
+        .json({ message: "Successfull Authentication", user: user });
+      return;
+    }
+
+    const token = await jwt.sign({ id: req.user.id }, process.env.SECRET);
+
+    const user = {
+      id: req.user.id,
+      username: req.body.username,
+      token: token,
+    };
+
+    res.status(201).json({ message: "Successfull Authentication", user: user });
   } catch (error) {
     res.status(501).json({ message: error.message, error: error });
   }
