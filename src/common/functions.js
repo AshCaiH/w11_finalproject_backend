@@ -1,3 +1,4 @@
+const fs = require("fs");
 const weathercodes = {
     0: "Clear sky",
     1: "Mainly clear",
@@ -56,6 +57,31 @@ module.exports = {
             req.location = response.features[0].properties;
 
             next();
+        } catch (error) {
+            res.status(500).json({
+                message: error.message,
+                error: error
+            });
+        }
+    },
+
+    requestMapImage: async (req, res, next) => {
+        try {
+        const lat = req.location.lat
+        const lon = req.location.lon
+
+        const url = `https://maps.geoapify.com/v1/staticmap?style=klokantech-basic&width=600&height=400&center=lonlat:${lon},${lat}&zoom=13&apiKey=${process.env.GEOAPIFY_KEY}`
+
+        console.log(url);
+
+        const response = await fetch(url, {
+            method: "GET"
+        }).then((response) => {
+            return response
+        })
+
+        req.mapimage = response;
+
         } catch (error) {
             res.status(500).json({
                 message: error.message,
