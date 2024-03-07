@@ -18,4 +18,7 @@ userRouter.post("/users/logIn", comparePass, logIn);
 // Auth check
 userRouter.get("/users/authCheck", tokenCheck, logIn);
 
+// Update user
+userRouter.post("/users/update", tokenCheck, logIn);
+
 module.exports = userRouter;
