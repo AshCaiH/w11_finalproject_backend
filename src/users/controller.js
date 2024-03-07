@@ -95,7 +95,7 @@ const updateUser = async (req, res) => {
       throw new Error("Check body");
     }
     const updatedUser = await User.findOne({
-      where: { username: req.authCheck.username },
+      where: { id: req.authCheck.id },
     });
 
     res.status(200).json({ message: "User updated", user: updatedUser });
@@ -104,11 +104,25 @@ const updateUser = async (req, res) => {
   }
 };
 
-// Delete Uuser
+// Delete User account
+
+const delUser = async (req, res) => {
+  try {
+    await User.destroy({
+      where: {
+        username: req.authCheck.username,
+      },
+    });
+    res.status(200).json({ message: "User deleted" });
+  } catch (error) {
+    res.status(501).json({ message: error.message, error: error });
+  }
+};
 
 module.exports = {
   signUp: signUp,
   getUsers: getUsers,
   logIn: logIn,
   updateUser: updateUser,
+  delUser: delUser,
 };
