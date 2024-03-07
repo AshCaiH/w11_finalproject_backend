@@ -77,10 +77,11 @@ module.exports = {
                 method: "GET"
             }).then((response) => {return response.json()});
 
-            console.log(response);
-
-            req.weather = weathercodes[response.daily.weather_code[0]];
-            req.temperature = response.daily.temperature;
+            req.weather = {
+                weathername: weathercodes[response.daily.weather_code[0]],
+                weathercode: response.daily.weather_code[0],
+                temperature: response.daily.temperature_2m_max
+            }
 
             next();
         } catch (error) {
@@ -94,8 +95,8 @@ module.exports = {
     weatherResponse: (req, res, next) => {
         res.status(200).json({
             message: "Weather Query Success", 
-            location: req.location,
             weather: req.weather,
-            "max temperature": req.temperature});
+            location: req.location,
+        });
     },
 }
