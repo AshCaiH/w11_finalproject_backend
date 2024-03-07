@@ -78,8 +78,10 @@ module.exports = {
             }).then((response) => {return response.json()});
 
             req.weather = {
-                weathername: weathercodes[response.daily.weather_code[0]],
-                weathercode: response.daily.weather_code[0],
+                weathername: response.daily.weather_code.map((code) => {
+                    return weathercodes[code]
+                }),
+                weathercode: response.daily.weather_code,
                 temperature: response.daily.temperature_2m_max
             }
 
