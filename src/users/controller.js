@@ -58,12 +58,16 @@ const logIn = async (req, res) => {
 // Update user info
 
 const updateUser = async (req, res) => {
+  console.log(Object.keys(req.body)[0]);
   try {
     if (!req.authCheck) {
       res.staus(401).json({ message: "You are not Authorized to update" });
       return;
     }
-    if (req.body.update === "username") {
+    if (
+      req.params.choice === "username" &&
+      req.params.choice === Object.keys(req.body)[0]
+    ) {
       await User.update(
         { username: req.body.username },
         {
@@ -72,7 +76,10 @@ const updateUser = async (req, res) => {
           },
         }
       );
-    } else if (req.body.update === "email") {
+    } else if (
+      req.params.choice === "email" &&
+      req.params.choice === Object.keys(req.body)[0]
+    ) {
       await User.update(
         { email: req.body.email },
         {
@@ -81,7 +88,10 @@ const updateUser = async (req, res) => {
           },
         }
       );
-    } else if (req.body.update === "password") {
+    } else if (
+      req.params.choice === "password" &&
+      req.params.choice === Object.keys(req.body)[0]
+    ) {
       const saltRounds = parseInt(process.env.SALT_ROUNDS);
       await User.update(
         { password: await bcrypt.hash(req.body.password, saltRounds) },
