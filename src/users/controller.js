@@ -2,9 +2,28 @@ const User = require("./model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+
+const checkIfExists = async(type, value) => {
+  const query = await User.findOne({where: {[type]: value}});
+
+  if (query) return true;
+  else return false;
+}
+
+
 // SignUp
 const signUp = async (req, res) => {
   try {
+    if (await checkIfExists("username", req.body.username)) {
+      res.status(409).json({ error: "Username already in use" });
+      return
+    }
+
+    if (await checkIfExists("email", req.body.email)) {
+      res.status(409).json({ error: "Email address already in use" });
+      return
+    }
+
     const user = await User.create({
       username: req.body.username,
       email: req.body.email,
