@@ -1,4 +1,5 @@
-const fs = require("fs");
+const imageToBase64 = require("image-to-base64");
+
 const weathercodes = {
     0: "Clear sky",
     1: "Mainly clear",
@@ -72,15 +73,20 @@ module.exports = {
 
         const url = `https://maps.geoapify.com/v1/staticmap?style=klokantech-basic&width=600&height=400&center=lonlat:${lon},${lat}&zoom=13&apiKey=${process.env.GEOAPIFY_KEY}`
 
-        console.log(url);
+        const mapImage = await imageToBase64(url) // Path to the image
+        .then(
+            (response) => {
+                return response
+            }
+        ).catch(
+            (error) => {
+                console.log(error); // Logs an error if there was one
+            }
+        )
 
-        const response = await fetch(url, {
-            method: "GET"
-        }).then((response) => {
-            return response
-        })
+        req.mapImage = mapImage
 
-        req.mapimage = response;
+        next();
 
         } catch (error) {
             res.status(500).json({
@@ -125,6 +131,7 @@ module.exports = {
             message: "Weather Query Success", 
             weather: req.weather,
             location: req.location,
+            map: req.mapImage,
         });
     },
 }
