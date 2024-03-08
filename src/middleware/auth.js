@@ -20,10 +20,15 @@ const comparePass = async (req, res, next) => {
       where: { username: req.body.username },
     });
 
+    if (!user) {
+      res.status(404).json({ error: "User does not exist." });
+      return;
+    }
+
     const myPassword = user.dataValues.password;
     const checkPassword = await bcrypt.compare(req.body.password, myPassword);
     if (!checkPassword) {
-      res.status(401).json({ message: "Wrong password" });
+      res.status(401).json({ error: "Incorrect password. Please try again." });
       return;
     }
     req.user = user;
