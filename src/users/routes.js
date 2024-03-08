@@ -23,6 +23,7 @@ userRouter.post("/users/logIn", comparePass, logIn);
 
 // Auth check
 userRouter.get("/users/authCheck", tokenCheck, logIn);
+
 // Update user
 // In body specify what You want to update
 // Ex Body for update username {username: <new username>} and  path: /users/update/username
