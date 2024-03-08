@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { weatherResponse, requestLocation, requestWeather } = require("./functions");
+const { weatherResponse, requestLocation, requestMapImage, requestWeather } = require("./functions");
 
 const commonRouter = Router();
 
