@@ -26,10 +26,11 @@ userRouter.get("/users/authCheck", tokenCheck, logIn);
 
 // Update user
 // In body specify what You want to update
-// Ex Body for update username {"update": "username", username: <new username>}
-// Ex Body for update email {"update": "email", username: <new email>}
-// Ex Body for update password {"update": "email", username: <new password>}
-userRouter.put("/users/update", tokenCheck, updateUser);
+// Ex Body for update username {username: <new username>} and  path: /users/update/username
+// Ex Body for update email {email: <new email>} and  path: /users/update/email
+// Ex Body for update password {password: <new password>} and  path: /users/update/password
+
+userRouter.put("/users/update/:choice", tokenCheck, updateUser);
 
 // Delete User
 // No body

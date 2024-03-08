@@ -2,9 +2,28 @@ const User = require("./model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+
+const checkIfExists = async(type, value) => {
+  const query = await User.findOne({where: {[type]: value}});
+
+  if (query) return true;
+  else return false;
+}
+
+
 // SignUp
 const signUp = async (req, res) => {
   try {
+    if (await checkIfExists("username", req.body.username)) {
+      res.status(409).json({ error: "Username already in use" });
+      return
+    }
+
+    if (await checkIfExists("email", req.body.email)) {
+      res.status(409).json({ error: "Email address already in use" });
+      return
+    }
+
     const user = await User.create({
       username: req.body.username,
       email: req.body.email,
@@ -45,7 +64,8 @@ const logIn = async (req, res) => {
 
     const user = {
       id: req.user.id,
-      username: req.body.username,
+      username: req.user.username,
+      email: req.user.email,
       token: token,
     };
 
@@ -58,12 +78,16 @@ const logIn = async (req, res) => {
 // Update user info
 
 const updateUser = async (req, res) => {
+  console.log(Object.keys(req.body)[0]);
   try {
     if (!req.authCheck) {
       res.staus(401).json({ message: "You are not Authorized to update" });
       return;
     }
-    if (req.body.update === "username") {
+    if (
+      req.params.choice === "username" &&
+      req.params.choice === Object.keys(req.body)[0]
+    ) {
       await User.update(
         { username: req.body.username },
         {
@@ -72,7 +96,10 @@ const updateUser = async (req, res) => {
           },
         }
       );
-    } else if (req.body.update === "email") {
+    } else if (
+      req.params.choice === "email" &&
+      req.params.choice === Object.keys(req.body)[0]
+    ) {
       await User.update(
         { email: req.body.email },
         {
@@ -81,7 +108,10 @@ const updateUser = async (req, res) => {
           },
         }
       );
-    } else if (req.body.update === "password") {
+    } else if (
+      req.params.choice === "password" &&
+      req.params.choice === Object.keys(req.body)[0]
+    ) {
       const saltRounds = parseInt(process.env.SALT_ROUNDS);
       await User.update(
         { password: await bcrypt.hash(req.body.password, saltRounds) },
