@@ -3,6 +3,6 @@ const { weatherResponse, requestLocation, requestMapImage, requestWeather } = re
 
 const commonRouter = Router();
 
-commonRouter.post("/getweather", requestLocation, requestWeather, weatherResponse);
+commonRouter.post("/getweather", requestLocation, requestWeather, requestMapImage, weatherResponse);
 
 module.exports = commonRouter;
