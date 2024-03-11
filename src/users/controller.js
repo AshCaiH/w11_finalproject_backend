@@ -83,7 +83,7 @@ const updateUser = async (req, res) => {
   console.log(Object.keys(req.body)[0]);
   try {
     if (!req.authCheck) {
-      res.staus(401).json({ message: "You are not Authorized to update" });
+      res.status(401).json({ message: "You are not Authorized to update" });
       return;
     }
     if (

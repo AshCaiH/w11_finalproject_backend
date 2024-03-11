@@ -5,7 +5,7 @@ const User = require("../users/model");
 const addHistory = async (req, res) => {
   try {
     if (!req.authCheck) {
-      res.staus(401).json({ message: "You are not Authorized to update" });
+      res.status(401).json({ message: "You are not Authorized to update" });
       return;
     }
     const history = await History.create({
@@ -24,7 +24,7 @@ const addHistory = async (req, res) => {
 const getHistory = async (req, res) => {
   try {
     if (!req.authCheck) {
-      res.staus(401).json({ message: "You are not Authorized to update" });
+      res.status(401).json({ message: "You are not Authorized to update" });
       return;
     }
     console.log(req.authCheck);

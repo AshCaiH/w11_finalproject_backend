@@ -52,7 +52,7 @@ module.exports = {
   requestLocation: async (req, res, next) => {
     try {
       if (!req.authCheck) {
-        res.staus(501).json({ message: "You are not Authorized to fetch API" });
+        res.status(501).json({ message: "You are not Authorized to fetch API" });
         return;
       }
       const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${req.body.location}&apiKey=${process.env.GEOAPIFY_KEY}`;
