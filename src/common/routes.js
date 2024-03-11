@@ -6,10 +6,13 @@ const {
   requestWeather,
 } = require("./functions");
 
+const {tokenCheck} = require("../middleware/auth");
+
 const commonRouter = Router();
 
 commonRouter.post(
   "/getweather",
+  tokenCheck,
   requestLocation,
   requestWeather,
   requestMapImage,
