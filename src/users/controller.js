@@ -2,32 +2,32 @@ const User = require("./model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-
-const checkIfExists = async(type, value) => {
-  const query = await User.findOne({where: {[type]: value}});
+const checkIfExists = async (type, value) => {
+  const query = await User.findOne({ where: { [type]: value } });
 
   if (query) return true;
   else return false;
-}
-
+};
 
 // SignUp
 const signUp = async (req, res) => {
   try {
     if (await checkIfExists("username", req.body.username)) {
       res.status(409).json({ error: "Username already in use" });
-      return
+      return;
     }
 
     if (await checkIfExists("email", req.body.email)) {
       res.status(409).json({ error: "Email address already in use" });
-      return
+      return;
     }
 
     const user = await User.create({
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
+      country: req.body.country,
+      town: req.body.town,
     });
     res.status(201).json({ message: "Craeated user", user: user });
   } catch (error) {
@@ -66,6 +66,8 @@ const logIn = async (req, res) => {
       id: req.user.id,
       username: req.user.username,
       email: req.user.email,
+      country: req.user.country,
+      town: req.user.town,
       token: token,
     };
 
@@ -121,8 +123,32 @@ const updateUser = async (req, res) => {
           },
         }
       );
+    } else if (
+      req.params.choice === "country" &&
+      req.params.choice === Object.keys(req.body)[0]
+    ) {
+      await User.update(
+        { country: req.body.country },
+        {
+          where: {
+            username: req.authCheck.username,
+          },
+        }
+      );
+    } else if (
+      req.params.choice === "town" &&
+      req.params.choice === Object.keys(req.body)[0]
+    ) {
+      await User.update(
+        { town: req.body.town },
+        {
+          where: {
+            username: req.authCheck.username,
+          },
+        }
+      );
     } else {
-      throw new Error("Check body");
+      throw new Error("Check body or request path");
     }
     const updatedUser = await User.findOne({
       where: { id: req.authCheck.id },

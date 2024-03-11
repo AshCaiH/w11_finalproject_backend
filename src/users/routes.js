@@ -31,7 +31,6 @@ userRouter.get("/users/authCheck", tokenCheck, logIn);
 // Ex Body for update password {password: <new password>} and  path: /users/update/password
 
 userRouter.put("/users/update/:choice", tokenCheck, updateUser);
-
 // Delete User
 // No body
 userRouter.delete("/users/delUser", tokenCheck, delUser);

@@ -15,6 +15,14 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     unique: true,
   },
+  country: {
+    type: DataTypes.STRING,
+    unique: false,
+  },
+  town: {
+    type: DataTypes.STRING,
+    unique: false,
+  },
 });
 
 module.exports = User;
