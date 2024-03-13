@@ -79,7 +79,13 @@ module.exports = {
       const lat = req.location.lat;
       const lon = req.location.lon;
 
-      const url = `https://maps.geoapify.com/v1/staticmap?style=klokantech-basic&width=600&height=400&center=lonlat:${lon},${lat}&zoom=13&apiKey=${process.env.GEOAPIFY_KEY}`;
+      const style = (req.body.style ? req.body.style : "klokantech-basic");
+      const zoom = (req.body.zoom ? req.body.zoom : 12);
+      const width = (req.body.width ? req.body.width : 600);
+      const height = (req.body.height ? req.body.height : 400);
+
+
+      const url = `https://maps.geoapify.com/v1/staticmap?style=${style}&width=${width}&height=${height}&center=lonlat:${lon},${lat}&zoom=${zoom}&apiKey=${process.env.GEOAPIFY_KEY}`;
 
       const mapImage = await imageToBase64(url) // Path to the image
         .then((response) => {
