@@ -52,7 +52,9 @@ module.exports = {
   requestLocation: async (req, res, next) => {
     try {
       if (!req.authCheck) {
-        res.status(501).json({ message: "You are not Authorized to fetch API" });
+        res
+          .status(501)
+          .json({ message: "You are not Authorized to fetch API" });
         return;
       }
       const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${req.body.location}&apiKey=${process.env.GEOAPIFY_KEY}`;
@@ -110,16 +112,28 @@ module.exports = {
     try {
       const lat = req.location.lat;
       const lon = req.location.lon;
+      let hourArray = [];
+      let tempArray = [];
+      let rainArray = [];
+      let cloudArray = [];
 
       // Note: This doesn't search by date yet, results in current weather and following 6 days.
+      let newDate = new Date();
+      const today = newDate.toISOString().substring(0, 10);
+      console.log(today);
 
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max&timezone=auto`;
+      let date = new Date();
+      let dayAfter = date.setDate(date.getDate() + 1);
+      dayAfter = date.toISOString().substring(0, 10);
+      console.log(dayAfter);
+
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max&hourly=temperature_2m,rain,cloud_cover&timezone=auto`;
 
       const response = await fetch(url, {
         method: "GET",
-      }).then((response) => {
-        return response.json();
-      });
+      }).then((response1) => {
+        return response1.json();
+      })
 
       req.weather = {
         weathername: response.daily.weather_code.map((code) => {
@@ -127,9 +141,11 @@ module.exports = {
         }),
         weathercode: response.daily.weather_code,
         temperature: response.daily.temperature_2m_max,
+        hourly: response.hourly,
       };
 
       next();
+      //
     } catch (error) {
       res.status(500).json({
         message: error.message,
