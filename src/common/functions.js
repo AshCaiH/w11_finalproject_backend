@@ -113,7 +113,7 @@ module.exports = {
 
       // Note: This doesn't search by date yet, results in current weather and following 6 days.
 
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max&timezone=auto`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max&hourly=temperature_2m&timezone=auto`;
 
       const response = await fetch(url, {
         method: "GET",
@@ -127,6 +127,7 @@ module.exports = {
         }),
         weathercode: response.daily.weather_code,
         temperature: response.daily.temperature_2m_max,
+        hourly: response.hourly,
       };
 
       next();
