@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const { tokenCheck } = require("../middleware/auth");
 
 const {
   weatherResponse,
@@ -8,7 +7,7 @@ const {
   requestWeather,
 } = require("./functions");
 
-const {tokenCheck} = require("../middleware/auth");
+const { tokenCheck } = require("../middleware/auth");
 
 const commonRouter = Router();
 
