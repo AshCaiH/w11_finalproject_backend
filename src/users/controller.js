@@ -53,6 +53,7 @@ const logIn = async (req, res) => {
       const user = {
         id: req.authCheck.id,
         username: req.authCheck.username,
+        email: req.authCheck.email,
         town: req.authCheck.town,
       };
       res
